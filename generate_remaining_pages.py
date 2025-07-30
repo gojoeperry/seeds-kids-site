@@ -1,0 +1,290 @@
+#!/usr/bin/env python3
+"""
+Resume SEO Page Generation from SerpAPI Keywords
+Skips already generated files and continues from where we left off
+"""
+
+import os
+import json
+import time
+from pathlib import Path
+from jinja2 import Template
+import requests
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+# === CONFIG ===
+API_KEY = os.getenv("CLAUDE_API_KEY")
+MODEL = "claude-3-5-sonnet-20241022"
+HEADERS = {
+    "x-api-key": API_KEY,
+    "anthropic-version": "2023-06-01",
+    "content-type": "application/json"
+}
+INPUT_FILE = "url_metadata.json"
+TEMPLATE_FILE = "claude_page_template.md"
+OUTPUT_DIR = "content"
+
+def file_already_exists(url):
+    """Check if output file already exists"""
+    clean_url = url.strip("/")
+    path_parts = clean_url.split("/")
+    
+    output_path = Path(OUTPUT_DIR)
+    for part in path_parts:
+        output_path = output_path / part
+    
+    return output_path.with_suffix(".md").exists()
+
+def load_data():
+    """Load metadata and template"""
+    print("Loading data...")
+    
+    # Load metadata
+    try:
+        with open(INPUT_FILE, 'r', encoding='utf-8') as f:
+            metadata = json.load(f)
+        print(f"   [OK] Loaded {len(metadata)} keywords from {INPUT_FILE}")
+    except FileNotFoundError:
+        print(f"   [ERROR] {INPUT_FILE} not found")
+        return None, None
+    
+    # Load template
+    try:
+        with open(TEMPLATE_FILE, 'r', encoding='utf-8') as f:
+            template = Template(f.read())
+        print(f"   [OK] Loaded template from {TEMPLATE_FILE}")
+        return metadata, template
+    except FileNotFoundError:
+        print(f"   [ERROR] {TEMPLATE_FILE} not found")
+        return metadata, None
+
+def call_claude_api(prompt):
+    """Call Claude API with error handling and retry logic"""
+    try:
+        payload = {
+            "model": MODEL,
+            "max_tokens": 1200,
+            "messages": [
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ]
+        }
+        
+        max_retries = 5
+        for attempt in range(max_retries):
+            response = requests.post(
+                "https://api.anthropic.com/v1/messages", 
+                headers=HEADERS, 
+                json=payload,
+                timeout=30
+            )
+            
+            if response.status_code != 429:
+                break
+            
+            wait_time = 5 * (attempt + 1)
+            print(f"   [RATE LIMIT] 429 Too Many Requests. Retrying in {wait_time} seconds...")
+            time.sleep(wait_time)
+        
+        if response.status_code != 200:
+            raise Exception(f'Claude API failed: {response.status_code} {response.text}')
+        
+        return response.json()["content"][0]["text"]
+        
+    except requests.exceptions.HTTPError as e:
+        print(f"   [WARNING] HTTP Error {e.response.status_code}")
+        return None
+    except Exception as e:
+        print(f"   [WARNING] Claude API Error: {e}")
+        return None
+
+def make_prompt(keyword, cluster):
+    """Create optimized prompt for Claude"""
+    return f"""Write a complete 500-word SEO-optimized page for kids worship content.
+
+TOPIC: "{keyword}"
+CLUSTER: {cluster}
+
+Include exactly these sections in this order:
+
+## Introduction (150 words)
+- Use the exact phrase "{keyword}" naturally 2-3 times
+- Explain why this topic matters for kids' spiritual growth
+- Make it warm and encouraging for parents/teachers
+
+## Scripture
+- Include 1-2 relevant Bible verses with references
+- Choose verses that kids can understand and relate to
+
+## Worship Ideas (100 words)
+- Suggest 2-3 specific activities or songs
+- Include motions, actions, or interactive elements
+- Make it practical for home or church use
+
+## Devotional Thought (100 words)
+- Simple spiritual lesson kids can understand
+- Connect the topic to God's love or Jesus
+- Include a short prayer or reflection
+
+## FAQs (150 words)
+Create exactly 3 unique questions and answers:
+1. Age-appropriate question (What age...)
+2. Practical application question (How can I...)
+3. Resource question (Where can I find...)
+
+Make the content joyful, biblically sound, and practical. Write in a warm, encouraging tone for Christian parents and teachers. Return only the markdown content without frontmatter."""
+
+def generate_fallback_content(keyword, cluster):
+    """Generate fallback content when API fails"""
+    return f"""## Introduction
+
+Welcome to our collection of {keyword}! At Seeds Kids Worship, we believe that music and worship are powerful tools to help children connect with God's love and learn His word. Whether you're a parent looking for meaningful content for family worship time, a Sunday school teacher planning your next lesson, or a pastor seeking engaging material for children's ministry, our {keyword} resources provide the perfect blend of biblical truth and joyful expression.
+
+## Scripture
+
+> "Let the message of Christ dwell among you richly as you teach and admonish one another with all wisdom through psalms, hymns, and songs from the Spirit, singing to God with gratitude in your hearts." - Colossians 3:16
+
+## Worship Ideas
+
+Explore our collection of {keyword} with interactive elements that help children engage with worship. These resources include simple motions, call-and-response activities, and age-appropriate musical experiences that make learning about God fun and memorable for young hearts.
+
+## Devotional Thought
+
+Teaching children through {keyword} builds a strong foundation of faith and biblical understanding. When kids participate in worship and music, they're not just having fun - they're hiding God's word in their hearts and developing a lifelong love for praising their Creator.
+
+## FAQs
+
+**What age group is {keyword} appropriate for?**
+Our {keyword} content is designed for children ages 3-12, with simple concepts and engaging activities that capture young attention while teaching important biblical truths.
+
+**How can I use {keyword} in our family devotions?**
+Incorporate {keyword} into your daily or weekly family worship time. Start with the activities together, then discuss the biblical concepts presented, and end with prayer.
+
+**Are there resources available to help teach {keyword}?**
+Yes! Our website provides comprehensive guides, activity ideas, and biblical content to help parents, teachers, and ministry leaders effectively use {keyword} in their educational and worship settings."""
+
+def create_output_path(url):
+    """Create output file path from URL"""
+    # Remove leading slash and create path
+    clean_url = url.strip("/")
+    path_parts = clean_url.split("/")
+    
+    # Create directory structure
+    output_path = Path(OUTPUT_DIR)
+    for part in path_parts:
+        output_path = output_path / part
+    
+    # Ensure parent directory exists
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    
+    return output_path.with_suffix(".md")
+
+def generate_remaining_pages():
+    """Generate only the remaining pages that don't exist yet"""
+    print("Starting remaining SEO page generation...")
+    print("=" * 50)
+    
+    # Check API key
+    if not API_KEY:
+        print("[ERROR] CLAUDE_API_KEY not found in environment variables")
+        print("Make sure your .env file contains: CLAUDE_API_KEY=your_key")
+        return
+    
+    # Load data
+    metadata, template = load_data()
+    if not metadata or not template:
+        return
+    
+    # Filter out already existing files
+    remaining_items = []
+    existing_count = 0
+    
+    for item in metadata:
+        if file_already_exists(item["url"]):
+            existing_count += 1
+        else:
+            remaining_items.append(item)
+    
+    print(f"\nFound {existing_count} existing files")
+    print(f"Remaining to generate: {len(remaining_items)}")
+    print("=" * 50)
+    
+    if not remaining_items:
+        print("All pages already generated!")
+        return
+    
+    successful = 0
+    failed = 0
+    
+    for i, item in enumerate(remaining_items, 1):
+        keyword = item["keyword"]
+        cluster = item.get("cluster", "general")
+        
+        print(f"\n[{i}/{len(remaining_items)}] Processing: {keyword}")
+        
+        # Generate content with Claude
+        prompt = make_prompt(keyword, cluster)
+        content = call_claude_api(prompt)
+        
+        # Use fallback if API failed
+        if content is None:
+            print("   [FALLBACK] Using fallback content...")
+            content = generate_fallback_content(keyword, cluster)
+            failed += 1
+        else:
+            successful += 1
+        
+        # Render template
+        try:
+            rendered_page = template.render(
+                title=item["title"],
+                meta_description=item["meta_description"],
+                url=item["url"],
+                h1=item["h1"],
+                keyword=keyword,
+                cluster=cluster,
+                content=content
+            )
+        except Exception as e:
+            print(f"   [ERROR] Template error: {e}")
+            continue
+        
+        # Save file
+        try:
+            output_file = create_output_path(item["url"])
+            with open(output_file, "w", encoding="utf-8") as f:
+                f.write(rendered_page)
+            print(f"   [OK] Saved: {output_file}")
+        except Exception as e:
+            print(f"   [ERROR] Save error: {e}")
+            continue
+        
+        # Rate limiting
+        if i < len(remaining_items):
+            print("   [WAIT] Waiting 2 seconds...")
+            time.sleep(2)
+    
+    # Summary
+    print("\n" + "=" * 50)
+    print("Remaining page generation complete!")
+    print(f"   Successful: {successful}")
+    print(f"   Failed (used fallback): {failed}")
+    print(f"   Total existing files: {existing_count + successful + failed}")
+    print(f"   Output directory: {Path(OUTPUT_DIR).absolute()}")
+
+def main():
+    """Main entry point"""
+    try:
+        generate_remaining_pages()
+    except KeyboardInterrupt:
+        print("\n\nGeneration stopped by user")
+    except Exception as e:
+        print(f"\nFatal error: {e}")
+
+if __name__ == "__main__":
+    main()
