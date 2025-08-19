@@ -1,0 +1,8 @@
+{
+  "model": "claude-sonnet-4-20250514",
+  "temperature": 0.6,
+  "max_tokens": 1400,
+  "completed": [
+    "content\\activities\\40-popular-sunday-school-songs\\index.md"
+  ]
+}

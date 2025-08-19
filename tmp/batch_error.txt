@@ -1,0 +1,46 @@
+2025-08-11 19:56:04,562 - INFO - Starting Seeds page generation...
+2025-08-11 19:56:04,605 - INFO - Loading keywords from 2 CSV files...
+2025-08-11 19:56:04,623 - INFO - Loaded 1242 rows from .\keyword_clusters.csv
+2025-08-11 19:56:04,714 - INFO - Loaded 414 rows from .\keyword_clusters_expanded.csv
+2025-08-11 19:56:04,750 - INFO - Total unique keywords loaded: 1570
+2025-08-11 19:56:04,757 - INFO - Loaded 186 songs from .\assets\seeds_songs.json
+2025-08-11 19:56:04,758 - INFO - Loaded style guide: 4352 characters
+2025-08-11 19:56:04,783 - INFO - Prepared TF-IDF vectors for 186 songs
+2025-08-11 19:56:04,784 - INFO - Loaded state: 16 completed items
+2025-08-11 19:56:04,811 - INFO - Resume: skipped 16 completed items
+2025-08-11 19:56:04,814 - INFO - Processing batch of 15 keywords
+2025-08-11 19:56:04,815 - INFO - [1/15] Processing: Best vbs theme songs
+2025-08-11 19:56:04,823 - ERROR - Failed to save state: [WinError 183] Cannot create a file when that file already exists: 'tmp\\generate_state.json.tmp' -> '.\\tmp\\generate_state.json'
+2025-08-11 19:56:04,824 - INFO - [2/15] Processing: Bible Nursery Rhymes Lyrics
+2025-08-11 19:56:04,830 - ERROR - Failed to save state: [WinError 183] Cannot create a file when that file already exists: 'tmp\\generate_state.json.tmp' -> '.\\tmp\\generate_state.json'
+2025-08-11 19:56:04,830 - INFO - [3/15] Processing: Bible Songs for kids with actions
+2025-08-11 19:56:04,837 - ERROR - Failed to save state: [WinError 183] Cannot create a file when that file already exists: 'tmp\\generate_state.json.tmp' -> '.\\tmp\\generate_state.json'
+2025-08-11 19:56:04,837 - INFO - [4/15] Processing: Bible songs for kids
+2025-08-11 19:56:04,843 - ERROR - Failed to save state: [WinError 183] Cannot create a file when that file already exists: 'tmp\\generate_state.json.tmp' -> '.\\tmp\\generate_state.json'
+2025-08-11 19:56:04,844 - INFO - [5/15] Processing: Bible songs for kids - youtube
+2025-08-11 19:56:04,849 - ERROR - Failed to save state: [WinError 183] Cannot create a file when that file already exists: 'tmp\\generate_state.json.tmp' -> '.\\tmp\\generate_state.json'
+2025-08-11 19:56:04,850 - INFO - [6/15] Processing: Bible songs for kids PDF
+2025-08-11 19:56:04,855 - ERROR - Failed to save state: [WinError 183] Cannot create a file when that file already exists: 'tmp\\generate_state.json.tmp' -> '.\\tmp\\generate_state.json'
+2025-08-11 19:56:04,855 - INFO - [7/15] Processing: Bible songs for kids lyrics
+2025-08-11 19:56:04,861 - ERROR - Failed to save state: [WinError 183] Cannot create a file when that file already exists: 'tmp\\generate_state.json.tmp' -> '.\\tmp\\generate_state.json'
+2025-08-11 19:56:04,861 - INFO - [8/15] Processing: Bible songs for kids youtube
+2025-08-11 19:56:04,866 - ERROR - Failed to save state: [WinError 183] Cannot create a file when that file already exists: 'tmp\\generate_state.json.tmp' -> '.\\tmp\\generate_state.json'
+2025-08-11 19:56:04,867 - INFO - [9/15] Processing: Bible verse songs
+2025-08-11 19:56:04,872 - ERROR - Failed to save state: [WinError 183] Cannot create a file when that file already exists: 'tmp\\generate_state.json.tmp' -> '.\\tmp\\generate_state.json'
+2025-08-11 19:56:04,872 - INFO - [10/15] Processing: Bible verse songs for preschoolers
+2025-08-11 19:56:04,878 - ERROR - Failed to save state: [WinError 183] Cannot create a file when that file already exists: 'tmp\\generate_state.json.tmp' -> '.\\tmp\\generate_state.json'
+2025-08-11 19:56:04,879 - INFO - [11/15] Processing: Bible verses set to music
+2025-08-11 19:56:04,883 - ERROR - Failed to save state: [WinError 183] Cannot create a file when that file already exists: 'tmp\\generate_state.json.tmp' -> '.\\tmp\\generate_state.json'
+2025-08-11 19:56:04,884 - INFO - [12/15] Processing: Children Christian songs MP3 download
+2025-08-11 19:56:04,889 - ERROR - Failed to save state: [WinError 183] Cannot create a file when that file already exists: 'tmp\\generate_state.json.tmp' -> '.\\tmp\\generate_state.json'
+2025-08-11 19:56:04,889 - INFO - [13/15] Processing: Children Gospel songs MP3 download
+2025-08-11 19:56:04,895 - ERROR - Failed to save state: [WinError 183] Cannot create a file when that file already exists: 'tmp\\generate_state.json.tmp' -> '.\\tmp\\generate_state.json'
+2025-08-11 19:56:04,895 - INFO - [14/15] Processing: Children's Choir songs for Church
+2025-08-11 19:56:04,901 - ERROR - Failed to save state: [WinError 183] Cannot create a file when that file already exists: 'tmp\\generate_state.json.tmp' -> '.\\tmp\\generate_state.json'
+2025-08-11 19:56:04,901 - INFO - [15/15] Processing: Children's praise and worship songs free
+2025-08-11 19:56:04,907 - ERROR - Failed to save state: [WinError 183] Cannot create a file when that file already exists: 'tmp\\generate_state.json.tmp' -> '.\\tmp\\generate_state.json'
+2025-08-11 19:56:04,911 - INFO - Saved processing log to tmp\generate_pages.csv
+2025-08-11 19:56:04,911 - INFO - === PROCESSING SUMMARY ===
+2025-08-11 19:56:04,911 - INFO - SEEN: 15
+2025-08-11 19:56:04,912 - INFO - EXISTS: 15
+2025-08-11 19:56:04,912 - INFO - Generation complete!

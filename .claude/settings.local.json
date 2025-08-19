@@ -41,7 +41,12 @@
       "Bash(gh repo create gojoeperry/seeds-kids-site --public --push --source=.)",
       "Bash(npm run build:*)",
       "Bash(npm run:*)",
-      "Bash(npx update-browserslist-db:*)"
+      "Bash(npx update-browserslist-db:*)",
+      "Bash(git branch:*)",
+      "Bash(copy:*)",
+      "Bash(set -a)",
+      "Bash(source .env)",
+      "Bash(set +a)"
     ],
     "deny": []
   }
