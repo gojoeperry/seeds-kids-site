@@ -46,7 +46,19 @@
       "Bash(copy:*)",
       "Bash(set -a)",
       "Bash(source .env)",
-      "Bash(set +a)"
+      "Bash(set +a)",
+      "Bash(timeout:*)",
+      "WebFetch(domain:seeds-kids-site-cy4lrbg8u-josephs-projects-eec51354.vercel.app)",
+      "WebFetch(domain:seeds-kids-site.vercel.app)",
+      "Bash(npm i:*)",
+      "Bash(tasklist:*)",
+      "Bash(del test_script_fix.py test_single_blog.py)",
+      "Bash(del:*)",
+      "Bash(taskkill:*)",
+      "Bash(/bashes)",
+      "Bash(git pull:*)",
+      "Bash(git merge:*)",
+      "Bash(git submodule:*)"
     ],
     "deny": []
   }
