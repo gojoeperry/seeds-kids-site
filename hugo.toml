@@ -15,3 +15,8 @@ theme = "ananke"
 [taxonomies]
   tag = "tags"
   category = "categories"
+
+[[menu.main]]
+  name = "All Songs"
+  url = "/all-songs/"
+  weight = 10

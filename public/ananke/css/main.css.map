@@ -1,7 +1,7 @@
 {
 	"version": 3,
 	"file": "main.css",
-	"sourceRoot": "C:/Users/joepe/seeds-kids-seo/site",
+	"sourceRoot": "C:/Users/joepe/seeds-kids-seo",
 	"sources": [
 		"ananke/css/main.css"
 	],

@@ -1,0 +1,242 @@
+{{ define "header" }}
+  {{ partials.Include "page-header.html" . }}
+{{ end }}
+
+{{ define "main" }}
+<div class="mw8 center ph3 pv4">
+  <article>
+    <header class="tc pb4">
+      <h1 class="f1 lh-title">{{ .Title }}</h1>
+      <p class="f4 measure center lh-copy">{{ .Content }}</p>
+    </header>
+
+    <!-- Search Section -->
+    <div class="bg-light-gray pa4 br3 mb4">
+      <div class="tc mb3">
+        <h2 class="f3 ma0 mb3">Search Songs</h2>
+      </div>
+      
+      <div class="flex flex-column flex-row-ns items-center justify-center">
+        <input 
+          type="text" 
+          id="search-input" 
+          placeholder="Search by title, topic, or Scripture reference..." 
+          class="input-reset ba b--black-20 pa3 mb2 mb0-ns mr2-ns w-100 w-70-ns br2 f4"
+          style="max-width: 500px;"
+        />
+        <button 
+          onclick="clearSearch()" 
+          class="button-reset bg-red white pa3 br2 pointer hover-bg-dark-red f4 bn"
+        >
+          Clear
+        </button>
+      </div>
+      
+      <div class="tc mt3">
+        <p class="f6 gray ma0">
+          Found <span id="results-count">{{ len (where .Site.RegularPages "Section" "songs") }}</span> songs
+        </p>
+      </div>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="mb4">
+      <div class="flex flex-wrap items-center justify-center">
+        <span class="f5 b mr3 mb2">Filter by tag:</span>
+        <button onclick="filterByTag('')" class="filter-tag active mr2 mb2 pa2 br-pill ba b--black-20 bg-white hover-bg-light-blue pointer f6">All</button>
+        <button onclick="filterByTag('worship')" class="filter-tag mr2 mb2 pa2 br-pill ba b--black-20 bg-white hover-bg-light-blue pointer f6">Worship</button>
+        <button onclick="filterByTag('kids')" class="filter-tag mr2 mb2 pa2 br-pill ba b--black-20 bg-white hover-bg-light-blue pointer f6">Kids</button>
+        <button onclick="filterByTag('songs')" class="filter-tag mr2 mb2 pa2 br-pill ba b--black-20 bg-white hover-bg-light-blue pointer f6">Songs</button>
+      </div>
+    </div>
+
+    <!-- Songs Grid -->
+    <div id="songs-container" class="flex flex-wrap nl2 nr2">
+      {{ range (where .Site.RegularPages "Section" "songs") }}
+        {{ if not (eq .File.BaseFileName "_index") }}
+        <div class="song-item w-100 w-50-m w-third-l pa2" 
+             data-title="{{ .Title | lower }}" 
+             data-description="{{ .Description | lower }}"
+             data-tags="{{ delimit .Params.tags "," | lower }}"
+             data-content="{{ .Content | plainify | lower | truncate 200 }}">
+          <div class="bg-white ba b--black-10 br3 pa3 h-100 hover-shadow">
+            <a href="{{ .RelPermalink }}" class="link black">
+              <h3 class="f4 lh-title ma0 mb2">{{ .Title }}</h3>
+              <p class="f6 lh-copy gray ma0 mb3">{{ .Description | truncate 120 "..." }}</p>
+              
+              <!-- Tags -->
+              {{ if .Params.tags }}
+              <div class="mb2">
+                {{ range .Params.tags }}
+                <span class="f7 br-pill ba b--black-20 ph2 pv1 dib mr1 mb1 black-50">{{ . }}</span>
+                {{ end }}
+              </div>
+              {{ end }}
+              
+              <div class="f7 gray">
+                <span>{{ .ReadingTime }} min read</span>
+                {{ if .Date }}
+                <span class="ml2">{{ .Date.Format "Jan 2006" }}</span>
+                {{ end }}
+              </div>
+            </a>
+          </div>
+        </div>
+        {{ end }}
+      {{ end }}
+    </div>
+
+    <!-- No Results Message -->
+    <div id="no-results" class="tc pa4 dn">
+      <h3 class="f3 gray">No songs found</h3>
+      <p class="f5 gray">Try adjusting your search terms or clearing the filters.</p>
+    </div>
+
+    <!-- Load More Button -->
+    <div class="tc mt4">
+      <button id="load-more" class="button-reset bg-blue white pa3 br2 pointer hover-bg-dark-blue f4 bn" style="display: none;">
+        Load More Songs
+      </button>
+    </div>
+  </article>
+</div>
+
+<!-- Search JavaScript -->
+<script>
+let allSongs = [];
+let filteredSongs = [];
+let currentFilter = '';
+let itemsPerPage = 12;
+let currentlyShowing = itemsPerPage;
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all song items
+    allSongs = Array.from(document.querySelectorAll('.song-item'));
+    filteredSongs = [...allSongs];
+    
+    // Show initial items
+    showItems();
+    
+    // Setup search
+    const searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('input', debounce(performSearch, 300));
+});
+
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+function performSearch() {
+    const searchTerm = document.getElementById('search-input').value.toLowerCase();
+    
+    if (searchTerm.length === 0) {
+        filteredSongs = currentFilter ? allSongs.filter(item => 
+            item.dataset.tags.includes(currentFilter)) : [...allSongs];
+    } else {
+        const baseItems = currentFilter ? allSongs.filter(item => 
+            item.dataset.tags.includes(currentFilter)) : allSongs;
+            
+        filteredSongs = baseItems.filter(item => 
+            item.dataset.title.includes(searchTerm) ||
+            item.dataset.description.includes(searchTerm) ||
+            item.dataset.content.includes(searchTerm) ||
+            item.dataset.tags.includes(searchTerm)
+        );
+    }
+    
+    currentlyShowing = itemsPerPage;
+    showItems();
+    updateResultsCount();
+}
+
+function filterByTag(tag) {
+    // Update active button
+    document.querySelectorAll('.filter-tag').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    currentFilter = tag;
+    performSearch(); // This will respect the current search term
+}
+
+function clearSearch() {
+    document.getElementById('search-input').value = '';
+    currentFilter = '';
+    filteredSongs = [...allSongs];
+    currentlyShowing = itemsPerPage;
+    
+    // Reset active filter button
+    document.querySelectorAll('.filter-tag').forEach(btn => btn.classList.remove('active'));
+    document.querySelector('.filter-tag').classList.add('active');
+    
+    showItems();
+    updateResultsCount();
+}
+
+function showItems() {
+    // Hide all items
+    allSongs.forEach(item => item.style.display = 'none');
+    
+    // Show filtered items up to current limit
+    const itemsToShow = filteredSongs.slice(0, currentlyShowing);
+    itemsToShow.forEach(item => item.style.display = 'block');
+    
+    // Show/hide load more button
+    const loadMoreBtn = document.getElementById('load-more');
+    if (filteredSongs.length > currentlyShowing) {
+        loadMoreBtn.style.display = 'inline-block';
+    } else {
+        loadMoreBtn.style.display = 'none';
+    }
+    
+    // Show/hide no results message
+    const noResults = document.getElementById('no-results');
+    if (filteredSongs.length === 0) {
+        noResults.classList.remove('dn');
+    } else {
+        noResults.classList.add('dn');
+    }
+}
+
+function updateResultsCount() {
+    document.getElementById('results-count').textContent = filteredSongs.length;
+}
+
+// Load more functionality
+document.getElementById('load-more').addEventListener('click', function() {
+    currentlyShowing += itemsPerPage;
+    showItems();
+});
+</script>
+
+<style>
+.hover-shadow:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+    transition: all 0.2s ease;
+}
+
+.filter-tag.active {
+    background-color: #357edd !important;
+    color: white !important;
+}
+
+.song-item {
+    transition: opacity 0.3s ease;
+}
+
+#search-input:focus {
+    outline: none;
+    border-color: #357edd;
+    box-shadow: 0 0 0 2px rgba(53, 126, 221, 0.2);
+}
+</style>
+
+{{ end }}

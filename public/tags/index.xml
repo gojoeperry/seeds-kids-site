@@ -2,24 +2,108 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Seeds Kids Worship</title>
-    <link>http://localhost:1314/tags/</link>
+    <link>https://seedskidsworship.com/tags/</link>
     <description>Recent content in Tags on Seeds Kids Worship</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 01 Jan 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1314/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://seedskidsworship.com/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Kids</title>
-      <link>http://localhost:1314/tags/kids/</link>
+      <link>https://seedskidsworship.com/tags/kids/</link>
       <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1314/tags/kids/</guid>
+      <guid>https://seedskidsworship.com/tags/kids/</guid>
       <description></description>
     </item>
     <item>
       <title>Worship</title>
-      <link>http://localhost:1314/tags/worship/</link>
+      <link>https://seedskidsworship.com/tags/worship/</link>
       <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1314/tags/worship/</guid>
+      <guid>https://seedskidsworship.com/tags/worship/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Actions</title>
+      <link>https://seedskidsworship.com/tags/actions/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://seedskidsworship.com/tags/actions/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Christmas</title>
+      <link>https://seedskidsworship.com/tags/christmas/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://seedskidsworship.com/tags/christmas/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Devotional</title>
+      <link>https://seedskidsworship.com/tags/devotional/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://seedskidsworship.com/tags/devotional/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Easter</title>
+      <link>https://seedskidsworship.com/tags/easter/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://seedskidsworship.com/tags/easter/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Gospel</title>
+      <link>https://seedskidsworship.com/tags/gospel/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://seedskidsworship.com/tags/gospel/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Hymns</title>
+      <link>https://seedskidsworship.com/tags/hymns/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://seedskidsworship.com/tags/hymns/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Lullaby</title>
+      <link>https://seedskidsworship.com/tags/lullaby/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://seedskidsworship.com/tags/lullaby/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Praise</title>
+      <link>https://seedskidsworship.com/tags/praise/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://seedskidsworship.com/tags/praise/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Scripture</title>
+      <link>https://seedskidsworship.com/tags/scripture/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://seedskidsworship.com/tags/scripture/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Songs</title>
+      <link>https://seedskidsworship.com/tags/songs/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://seedskidsworship.com/tags/songs/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Sunday-School</title>
+      <link>https://seedskidsworship.com/tags/sunday-school/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://seedskidsworship.com/tags/sunday-school/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Vbs</title>
+      <link>https://seedskidsworship.com/tags/vbs/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://seedskidsworship.com/tags/vbs/</guid>
       <description></description>
     </item>
   </channel>
