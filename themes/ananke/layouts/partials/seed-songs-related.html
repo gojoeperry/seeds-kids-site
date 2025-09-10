@@ -1,0 +1,24 @@
+{{- if .Params.seed_songs -}}
+{{- $currentPage := . -}}
+{{- $relatedPages := collections.Slice -}}
+{{- range .Site.RegularPages -}}
+  {{- if and (intersect .Params.seed_songs $currentPage.Params.seed_songs) (not (eq .RelPermalink $currentPage.RelPermalink)) -}}
+    {{- $relatedPages = $relatedPages | append . -}}
+  {{- end -}}
+{{- end -}}
+{{- if gt (len $relatedPages) 0 -}}
+<div class="mt5 mb4">
+  <h3 class="f4 b mb3">Related Content</h3>
+  <div class="flex flex-wrap">
+    {{- range collections.First 6 $relatedPages -}}
+      <div class="w-100 w-50-m w-third-l pa2">
+        <a href="{{ .RelPermalink }}" class="link db bg-light-gray hover-bg-light-blue pa3 br2 black hover-dark-blue">
+          <h4 class="f5 b ma0 mb2">{{ .Title }}</h4>
+          <p class="f6 ma0 lh-copy">{{ .Description | strings.Truncate 100 "..." }}</p>
+        </a>
+      </div>
+    {{- end -}}
+  </div>
+</div>
+{{- end -}}
+{{- end -}}
