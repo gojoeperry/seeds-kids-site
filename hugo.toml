@@ -1,0 +1,17 @@
+baseURL = "https://seedskidsworship.com"
+languageCode = "en-us"
+title = "Seeds Kids Worship"
+theme = "ananke"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+[params]
+  description = "Scripture-based worship songs and activities for children"
+  author = "Seeds Kids Worship"
+  
+[taxonomies]
+  tag = "tags"
+  category = "categories"
