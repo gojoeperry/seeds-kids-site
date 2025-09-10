@@ -25,7 +25,7 @@ HEADERS = {
 }
 INPUT_FILE = "url_metadata.json"
 TEMPLATE_FILE = "claude_page_template.md"
-OUTPUT_DIR = "content"
+OUTPUT_DIR = "site/content"
 
 def load_data():
     """Load metadata and template"""

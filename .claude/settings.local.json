@@ -58,7 +58,16 @@
       "Bash(/bashes)",
       "Bash(git pull:*)",
       "Bash(git merge:*)",
-      "Bash(git submodule:*)"
+      "Bash(git submodule:*)",
+      "Bash(git fetch:*)",
+      "Bash(git reset:*)",
+      "WebFetch(domain:kidsworshipvideos.com)",
+      "WebFetch(domain:localhost)",
+      "WebFetch(domain:github.com)",
+      "Bash(git restore:*)",
+      "Bash(git rm:*)",
+      "WebFetch(domain:seeds-kids-site-q6bxi9czv-josephs-projects-eec51354.vercel.app)",
+      "Bash(xargs rm:*)"
     ],
     "deny": []
   }
