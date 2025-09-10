@@ -14,4 +14,4 @@ theme = "ananke"
   
 [taxonomies]
   tag = "tags"
-  category = "categories"
+  category = "categories"// Force deployment - Wed, Sep 10, 2025 11:41:19 AM
